@@ -90,14 +90,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test && npm run test:e2e"
     }
   },
   "lint-staged": {
     "*.ts": [
       "npm run prettier",
       "git add",
-      "npm run lint"
+      "eslint --ignore-path .eslintignore"
     ]
   },
   "engines": {
