@@ -15,9 +15,13 @@ A phonebook app API written in NestJS.
 
 ### Installation
 
+Install the dependencies by running
+
 ```bash
 npm install
 ```
+
+Copy `.env.example` file to `.env` file. Update the `MONGO_URL` value with your MongoDB URL. Optionally, update the `AUTH_TOKEN` value.
 
 ### Running the app
 
