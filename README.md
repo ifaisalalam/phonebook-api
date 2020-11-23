@@ -1,5 +1,6 @@
 ## Phonebook API
 
+[![Build Status](https://travis-ci.com/ifaisalalam/phonebook-api.svg?branch=master)](https://travis-ci.com/ifaisalalam/phonebook-api)
 [![codecov](https://codecov.io/gh/ifaisalalam/phonebook-api/branch/master/graph/badge.svg?token=97PSQYQKPA)](https://codecov.io/gh/ifaisalalam/phonebook-api)
 
 A phonebook app API written in NestJS.
