@@ -1,0 +1,40 @@
+anguage: node_js
+node_js:
+  - "14.15.0"
+
+sudo: required
+
+branches:
+  only:
+    - master
+
+addons:
+  apt:
+    packages:
+      - bash
+
+jobs:
+  include:
+    - stage: lint
+      install:
+        - npm install
+      script:
+        - npm run lint
+
+    - stage: test
+      install:
+        - npm install
+      script:
+        - npm run test
+        - npm run test:e2e
+
+stages:
+  - name: lint
+  - name: test
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+    recipients:
+      - ifaisalalam@gmail.com
