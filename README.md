@@ -10,15 +10,15 @@ A phonebook app API written in NestJS.
 2. Update an existing contact
 3. Delete a contact
 4. Search contacts by either name or email
-5 List all contacts
+5. List all contacts
 
-## Installation
+### Installation
 
 ```bash
 npm install
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 # development
@@ -31,7 +31,7 @@ npm run start:dev
 npm run start:prod
 ```
 
-## Test
+### Test
 
 ```bash
 # unit tests with coverage
