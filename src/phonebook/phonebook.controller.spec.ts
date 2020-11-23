@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Phonebook } from './phonebook.entity';
 import { DatabaseModule } from '../database/database.module';
 import * as faker from 'faker';
+import { NotFoundException } from '@nestjs/common';
 
 describe('PhonebookController', () => {
   let module: TestingModule;
@@ -129,6 +130,41 @@ describe('PhonebookController', () => {
         expect(searchResponse.count_page_results).toBeDefined();
         expect(searchResponse.current_page).toBeDefined();
         expect(searchResponse.results).toBeDefined();
+      });
+    });
+
+    describe('delete/:id', () => {
+      let contact: Partial<Phonebook> = {
+        name: faker.name.findName().substr(0, 50),
+        email: faker.internet.exampleEmail(),
+      };
+
+      beforeEach(async () => {
+        contact = await phonebookController.addContact(<AddContactDto>contact);
+      });
+
+      it('should delete existing contact', async () => {
+        const deleteContactResponse = await phonebookController.deleteContact(
+          String(contact.id),
+        );
+        expect(deleteContactResponse.success).toBe(true);
+        expect(deleteContactResponse.deletedContact).toStrictEqual(contact);
+
+        const findContactResponse = phonebookController.getContactInfo(
+          String(contact.id),
+        );
+        await expect(findContactResponse).rejects.toThrowError(
+          NotFoundException,
+        );
+      });
+
+      it('should return undefined if contact does not exist', async () => {
+        const deleteContactResponse = phonebookController.deleteContact(
+          '1234567890abc1234567890a',
+        );
+        await expect(deleteContactResponse).rejects.toThrowError(
+          NotFoundException,
+        );
       });
     });
   });

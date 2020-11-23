@@ -232,4 +232,45 @@ describe('/phonebook (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST);
     });
   });
+
+  describe('/delete/:id (DELETE)', () => {
+    const contact: Partial<Phonebook> = {
+      name: faker.name.findName().substr(0, 100),
+      email: faker.internet.exampleEmail().substr(0, 320),
+    };
+
+    beforeAll(async () => {
+      return request(app.getHttpServer())
+        .post('/phonebook/add')
+        .auth(AUTH_TOKEN, { type: 'bearer' })
+        .send(<AddContactDto>contact)
+        .expect(HttpStatus.CREATED)
+        .expect(res => {
+          contact.id = res.body.id;
+        });
+    });
+
+    it('should return authorization error when auth header is not set', () => {
+      return request(app.getHttpServer())
+        .delete('/phonebook/delete/123abc123abc123abc123abc')
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should delete an existing contact', () => {
+      return request(app.getHttpServer())
+        .delete(`/phonebook/delete/${contact.id}`)
+        .auth(AUTH_TOKEN, { type: 'bearer' })
+        .expect(HttpStatus.OK)
+        .expect(res => {
+          if (res.body.success !== true) throw new Error();
+        });
+    });
+
+    it('should throw 404 if contact does not exist (already)', () => {
+      return request(app.getHttpServer())
+        .delete(`/phonebook/delete/123abc123abc123abc123abc`)
+        .auth(AUTH_TOKEN, { type: 'bearer' })
+        .expect(HttpStatus.NOT_FOUND);
+    });
+  });
 });

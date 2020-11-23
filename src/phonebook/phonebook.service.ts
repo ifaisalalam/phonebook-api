@@ -60,4 +60,18 @@ export class PhonebookService {
 
     return this.phonebookRepository.save(phonebook);
   }
+
+  async deleteContact(id: string) {
+    if (!ObjectID.isValid(id)) {
+      return undefined;
+    }
+
+    const contact = await this.phonebookRepository.findOne(id);
+    if (!contact) {
+      return undefined;
+    }
+
+    await this.phonebookRepository.delete(contact);
+    return contact;
+  }
 }

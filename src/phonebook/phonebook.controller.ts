@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   NotFoundException,
   Param,
@@ -106,5 +108,16 @@ export class PhonebookController {
     }
 
     return updateResponse;
+  }
+
+  @Delete('delete/:id')
+  @HttpCode(HttpStatus.OK)
+  async deleteContact(@Param('id') id: string) {
+    const deletedContact = await this.phonebookService.deleteContact(id);
+    if (deletedContact === undefined) {
+      throw new NotFoundException('contact does not exist already');
+    }
+
+    return { success: true, deletedContact };
   }
 }

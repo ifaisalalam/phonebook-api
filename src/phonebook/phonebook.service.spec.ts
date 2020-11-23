@@ -219,4 +219,39 @@ describe('PhonebookService', () => {
       expect(updatedContact.phone).toStrictEqual(contact.phone);
     });
   });
+
+  describe('deleteContact', () => {
+    let contact: Partial<Phonebook> = {
+      name: faker.name.findName().substr(0, 50),
+      email: faker.internet.exampleEmail(),
+    };
+
+    beforeEach(async () => {
+      contact = await phonebookService.addContact(<AddContactDto>contact);
+    });
+
+    it('should delete existing contact', async () => {
+      const deleteContactResponse = await phonebookService.deleteContact(
+        String(contact.id),
+      );
+      expect(deleteContactResponse).toStrictEqual(contact);
+
+      const findContactResponse = await phonebookService.getContactInfo(
+        String(contact.id),
+      );
+      expect(findContactResponse).toBeUndefined();
+    });
+
+    it('should return undefined if contact does not exist', async () => {
+      const deleteContactResponse = await phonebookService.deleteContact(
+        '1234567890abc1234567890a',
+      );
+      expect(deleteContactResponse).toBeUndefined();
+    });
+
+    it('should return undefined if id is invalid', async () => {
+      const deleteContactResponse = await phonebookService.deleteContact('abc');
+      expect(deleteContactResponse).toBeUndefined();
+    });
+  });
 });
