@@ -27,6 +27,8 @@ jobs:
       script:
         - npm run test
         - npm run test:e2e
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
 
 stages:
   - name: lint
