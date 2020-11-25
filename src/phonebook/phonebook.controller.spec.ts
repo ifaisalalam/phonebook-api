@@ -58,7 +58,7 @@ describe('PhonebookController', () => {
     describe('info/:id', () => {
       it('should return contact info given the id', async () => {
         const contacts = await phonebookController.listContacts();
-        const contact = contacts[0];
+        const contact = contacts.result[0];
         const contactInfo = await phonebookController.getContactInfo(
           String(contact.id),
         );
@@ -76,7 +76,7 @@ describe('PhonebookController', () => {
     describe('update', () => {
       it('should return the updated contact', async () => {
         const contacts = await phonebookController.listContacts();
-        const contact = contacts[0];
+        const contact = contacts.result[0];
         const newName = faker.name.findName();
         const newPhone = faker.phone.phoneNumber();
         const newEmail = faker.internet.email();

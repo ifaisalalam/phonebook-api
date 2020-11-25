@@ -37,7 +37,7 @@ export class PhonebookService {
     return this.phonebookRepository.findAndCount({
       where: { [property]: { $regex: value, $options: 'i' } },
       take: maxResultsPerPage,
-      skip: page - 1,
+      skip: (page - 1) * maxResultsPerPage,
     });
   }
 

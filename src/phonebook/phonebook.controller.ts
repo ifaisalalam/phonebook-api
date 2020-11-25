@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
   NotFoundException,
   Param,
@@ -13,7 +12,6 @@ import {
   Query,
   UseFilters,
   UseGuards,
-  ValidationPipe,
 } from '@nestjs/common';
 import { ApiAuthGuard } from '../auth/guards/api-auth.guard';
 import { PhonebookService } from './phonebook.service';
@@ -44,9 +42,13 @@ export class PhonebookController {
 
   @Get('list')
   @HttpCode(HttpStatus.OK)
-  listContacts() {
+  async listContacts() {
     // TODO: Implement pagination.
-    return this.phonebookService.getAllContacts();
+    const contacts = await this.phonebookService.getAllContacts();
+    return {
+      count: contacts.length,
+      result: contacts,
+    };
   }
 
   @Get('info/:id')
@@ -86,7 +88,7 @@ export class PhonebookController {
       count_results: total,
       total_pages: Math.ceil(total / MAX_RESULTS_PER_PAGE),
       current_page: page,
-      count_page_results: Math.min(total, MAX_RESULTS_PER_PAGE),
+      count_page_results: results.length,
       results,
     };
   }
