@@ -16,5 +16,6 @@ export const addContactSchema = Joi.object<AddContactDto>({
      * @see https://www.rfc-editor.org/rfc/rfc3696.txt
      */
     .max(320)
-    .email(),
+    .email()
+    .custom((value: string) => value.toLowerCase()),
 });
